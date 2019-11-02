@@ -9,5 +9,10 @@ require_relative('../models/ticket.rb')
     'funds' => 100
     })
 
+  film1 = Film.new({
+    'title' => 'Gladiator',
+    'price' => 10
+    })
+
   binding.pry
   nil

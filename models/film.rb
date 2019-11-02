@@ -1,6 +1,6 @@
 require_relative('../db/sql_runner.rb')
 
-class Customer
+class Film
 
   attr_accessor :title, :price
   attr_reader :id
