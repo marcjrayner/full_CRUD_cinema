@@ -45,6 +45,17 @@ class Screening
     SqlRunner.run(sql, values)
   end
 
+  def self.all
+    sql = "SELECT * FROM screenings;"
+    result = SqlRunner.run(sql)
+    return result.map { |screening| Screening.new(screening) }
+  end
+
+  def self.delete_all
+    sql = "DELETE FROM screenings;"
+    SqlRunner.run(sql)
+  end
+
   def self.ticket_sale(id)
     screenings = Screening.all
     for screening in screenings
@@ -65,10 +76,6 @@ class Screening
     end
   end
 
-  # def self.most_popular_time(film_id)
-  #   sql = "SELECT * FROM screenings"
-  # end
-
   def self.get_id(film, time)
     sql = "
     SELECT id FROM screenings
@@ -78,15 +85,20 @@ class Screening
     return result.to_i
   end
 
-  def self.all
-    sql = "SELECT * FROM screenings;"
-    result = SqlRunner.run(sql)
+  def self.get_screenings_from_film_id(film_id)
+    sql = "SELECT * FROM screenings
+    WHERE film_id = $1;"
+    values = [film_id]
+    result = SqlRunner.run(sql, values)
     return result.map { |screening| Screening.new(screening) }
   end
 
-  def self.delete_all
-    sql = "DELETE FROM screenings;"
-    SqlRunner.run(sql)
+  def self.most_popular_time(film_id)
+    screenings = Screening.get_screenings_from_film_id(film_id)
+    sorted_screenings = screenings.sort_by {|screening| screening.tickets_sold}
+    most_popular_time = sorted_screenings.pop
+    return most_popular_time
   end
+
 
 end
