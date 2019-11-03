@@ -74,7 +74,7 @@ class Film
     where films.title = $1;"
     values = [film_title]
     result = SqlRunner.run(sql, values)[0]['id']
-    return result
+    return result.to_i
   end
 
   def self.all

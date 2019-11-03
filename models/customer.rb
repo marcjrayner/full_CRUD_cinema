@@ -54,17 +54,20 @@ class Customer
     return films
   end
 
-  def buy_ticket(film_title)
+  def buy_ticket(film_title, screening_time)
     ticket1 = Ticket.new({
       'customer_id' => @id,
-      'film_id' => Film.get_id(film_title)
+      'film_id' => Film.get_id(film_title),
+      'screening_id' => Screening.get_id(Film.get_id(film_title), screening_time)
       })
     ticket1.save
     price = ticket1.get_price
-      if @funds >= price
+      if @funds >= price && Screening.get_available_tickets(ticket1.screening_id) > 0
         @funds -= price
+        Screening.ticket_sale(ticket1.screening_id)
       else
         ticket1.delete
+        return "Either it's sold out or you broke"
       end
       self.update
   end
