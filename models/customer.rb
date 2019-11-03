@@ -54,6 +54,17 @@ class Customer
     return films
   end
 
+  def buy_ticket(film_title)
+    ticket1 = Ticket.new({
+      'customer_id' => @id,
+      'film_id' => Film.get_id(film_title)
+      })
+    ticket1.save
+    price = ticket1.get_price
+    @funds -= price
+  end
+
+
   def self.all
     sql = "SELECT * FROM customers;"
     result = SqlRunner.run(sql)

@@ -42,6 +42,17 @@ class Ticket
     SqlRunner.run(sql, values)
   end
 
+  def get_price
+    sql = "
+    SELECT films.price FROM films
+    INNER JOIN tickets
+    on films.id = tickets.film_id
+    WHERE tickets.id = $1"
+    values = [@id]
+    price = SqlRunner.run(sql, values)[0]['price']
+    return price.to_i
+  end
+
   def self.all
     sql = "SELECT * FROM tickets;"
     result = SqlRunner.run(sql)

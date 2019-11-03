@@ -54,6 +54,15 @@ class Film
     return customers
   end
 
+  def self.get_id(film_title)
+    sql = "
+    SELECT id FROM films
+    where films.title = $1;"
+    values = [film_title]
+    result = SqlRunner.run(sql, values)[0]['id']
+    return result
+  end
+
   def self.all
     sql = "SELECT * FROM films;"
     result = SqlRunner.run(sql)
