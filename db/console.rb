@@ -89,6 +89,11 @@ require_relative('../models/film.rb')
   ticket4.save
   ticket5.save
 
+  screening1 = Screening.new({
+    'start_time' => '20:20:00'
+    'film_id' => film1.id
+    })
+
 
   binding.pry
   nil
