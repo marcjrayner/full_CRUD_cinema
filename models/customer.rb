@@ -61,9 +61,22 @@ class Customer
       })
     ticket1.save
     price = ticket1.get_price
-    @funds -= price
+      if @funds >= price
+        @funds -= price
+      else
+        ticket1.delete
+      end
+      self.update
   end
 
+  def count_tickets()
+    sql = "
+    SELECT * FROM tickets
+    where tickets.customer_id = $1"
+    values = [@id]
+    ticket_count = SqlRunner.run(sql, values).count
+    return ticket_count
+  end
 
   def self.all
     sql = "SELECT * FROM customers;"
